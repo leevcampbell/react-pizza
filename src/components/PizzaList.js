@@ -1,7 +1,22 @@
 import React from "react";
 import Pizza from "./Pizza";
+import{useState, useEffect } from 'react'
 
-function PizzaList() {
+function PizzaList({setSelectedPizza}) {
+
+const [pizzaList, setPizzaList] = useState([])
+
+useEffect(()=> {
+  fetch('http://localhost:3001/pizzas')
+  .then(res => res.json())
+  .then(pizzas => setPizzaList(pizzas))
+}, [])
+
+const renderPizzas = pizzaList.map((pizza => {
+  return <Pizza key = {pizza.id} pizza = {pizza} setSelectedPizza = {setSelectedPizza} />
+}))
+
+
   return (
     <table className="table table-striped">
       <thead>
@@ -14,7 +29,7 @@ function PizzaList() {
       </thead>
       <tbody>
         {
-          //render Pizza here
+         renderPizzas
         }
       </tbody>
     </table>
